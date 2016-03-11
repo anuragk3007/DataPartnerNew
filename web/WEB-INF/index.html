@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Data Partner</title>
+    </head>
+
+    <body>
+		<h1>Exponential</h1>
+		<h2>Hackathon Project</h2>
+		<h3>DataPartner Requset Finder</h3>
+
+		<form method="post" action="status.html">
+			<a>Data Partner:
+				<select name="dataPartner">
+					<option value="Select" selected disabled="disabled">Select</option>
+					<option value="adobe">adobe</option>
+					<option value="bluekai">bluekai</option>
+					<option value="datalogix">datalogix</option>
+					<option value="enterprise">enterprise</option>
+					<option value="ibehavior">ibehavior</option>
+					<option value="ihg">ihg</option>
+					<option value="liveramp">liveramp</option>
+					<option value="lotame">lotame</option>
+				</select>
+			</a></br></br>
+			<a>Request Ids:</a>
+			</br>
+				<textarea name="requestIdList" rows="5" cols="25">Enter semi-colon separated request Ids.</textarea>
+				</br>
+				</br>
+			<input type="submit" value="Check Request" name="submitRequest">
+			</br>
+			</br>
+			</br>
+			</br>
+		</form>
+		<form method="post">
+			<a>Add New Data Partner: 
+			<input type="text" name="newDataPartner">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="submit" value="Add" name="newDPRequest"></a>
+		</form>
+	</body>
