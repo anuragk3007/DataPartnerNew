@@ -15,7 +15,7 @@ function getDataPartnerList(file) {
     };
 $(document).ready(
     function(){
-        var table = getDataPartnerList("../../data/dataPartnerList.txt");
+        var table = getDataPartnerList("../../Data/dataPartnerList.txt");
         var list = document.getElementById("dataPartnerSelectorDropdown");
         for (var i = 0; i < table.length; i++) {
             var opt = table[i];
