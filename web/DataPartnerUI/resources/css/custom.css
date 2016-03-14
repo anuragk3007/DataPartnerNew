@@ -1,0 +1,10 @@
+html,body{height:100%;}
+
+.custom-container {
+    height: 100%;
+    width:100%;
+    min-height:100%;
+    background-color:#9eeef7;
+    padding:10px;
+    color:#000000;
+}
