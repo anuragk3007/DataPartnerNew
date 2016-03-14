@@ -1,43 +1,77 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Data Partner</title>
-    </head>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Data Partner</title>
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">-->
+    <link rel="stylesheet" href="../resources/css/bootstrap-theme.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
+    <script src="../resources/js/bootstrap.min.js"></script>
 
-    <body>
-		<h1>Exponential</h1>
-		<h2>Hackathon Project</h2>
-		<h3>DataPartner Requset Finder</h3>
 
-		<form method="post" action="status.html">
-			<a>Data Partner:
-				<select name="dataPartner">
-					<option value="Select" selected disabled="disabled">Select</option>
-					<option value="adobe">adobe</option>
-					<option value="bluekai">bluekai</option>
-					<option value="datalogix">datalogix</option>
-					<option value="enterprise">enterprise</option>
-					<option value="ibehavior">ibehavior</option>
-					<option value="ihg">ihg</option>
-					<option value="liveramp">liveramp</option>
-					<option value="lotame">lotame</option>
-				</select>
-			</a></br></br>
-			<a>Request Ids:</a>
-			</br>
-				<textarea name="requestIdList" rows="5" cols="25">Enter semi-colon separated request Ids.</textarea>
-				</br>
-				</br>
-			<input type="submit" value="Check Request" name="submitRequest">
-			</br>
-			</br>
-			</br>
-			</br>
-		</form>
-		<form method="post">
-			<a>Add New Data Partner: 
-			<input type="text" name="newDataPartner">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="submit" value="Add" name="newDPRequest"></a>
-		</form>
-	</body>
+    <link href="../resources/css/custom.css" rel="stylesheet" type="text/css">
+    <script src="../resources/js/dataPartnerIndex.js"></script>
+</head>
+
+<body>
+<div class="custom-container" style="overflow: true">
+    <div class="col-xs-2"></div>
+    <div class="col-lg-8">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h1 align="center" style="color: #c8e9f4">Exathon</h1>
+            </div>
+
+            <div class="panel-body" align="center">
+                <p style="font-size: 17"><strong>Data Partner Request Finder</strong></p>
+                <form id="formSubmission" name="formSubmission" method="post"
+                      action="status.html">
+                    <div class="col-xs-12">
+                        <div class="col-xs-3"></div>
+                        <div class="col-xs-2"><Strong>Data Partner </Strong></div>
+                        <div class="btn-group col-xs-7" style="margin-left:-15px">
+                            <input class="span2" id="dataPartner" name="dataPartner" type="hidden">
+                            <button type="button" id="dataPartnerListButton" name="dataPartnerListButton"
+                                    class="btn btn-info" style="width: 135px">Select Here
+                            </button>
+                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                                    id="dataPartnerList" name="dataPartnerList"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" id="dataPartnerSelectorDropdown"
+                                name="dataPartnerSelectorDropdown" style="margin-left: 15px">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="height:10px">
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="col-xs-3"></div>
+                        <div class="col-xs-2"><Strong>Request Ids </Strong></div>
+
+                        <div class="input-group col-xs-7" align="left">
+                            <textarea class="form-control" rows="3" id="requestIdList" name="requestIdList"
+                                      placeholder="Request Ids" required style="height:100px"></textarea>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="height:10px">
+                    </div>
+                    <div class="col-xs-7" align="left" style="float:right">
+                        <input type="submit" class="btn btn-info" id="requestSubmit" name="requestSubmit"
+                               value="Check Request" style="margin-left:-15px">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-2"></div>
+</div>
+</body>
+</html>
