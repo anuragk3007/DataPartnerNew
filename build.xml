@@ -1,0 +1,146 @@
+<?xml version="1.0" ?>
+
+<project name="datapartner" default="compile">
+
+    <property name="commonproperties" value="common.properties"/>
+    <property file="${commonproperties}"/>
+    <property file="build.properties"/>
+
+    <property name="deployRoot" value="${DEPLOYED_RESIN_WEBAPPS}/../.."/>
+    <property name="sql" value="${deployRoot}/sql"/>
+    <property name="config" value="${deployRoot}/config"/>
+    <property name="deployResources" value="${deployRoot}/resources"/>
+    <property name="bin" value="${deployRoot}/bin"/>
+    <property name="data" value="${deployRoot}/data"/>
+    <property name="scripts" value="scripts"/>
+    <property name="class.dir" value="classes"/>
+    <property name="resources" value="resources"/>
+    <property name="web" value="web"/>
+
+    <import file="deploy.xml"/>
+
+    <path id="jspc.classpath">
+        <pathelement location="${java.home}/../lib/tools.jar"/>
+        <pathelement location="/mnt/dev/tfr/lib/resin.jar"/>
+        <fileset dir="${RESIN_HOME}/lib">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="lib">
+            <include name="*.jar"/>
+            <exclude name="ajax4jsf.jar"/>
+        </fileset>
+        <pathelement location="classes"/>
+    </path>
+
+    <!--<macrodef name="precompile-jsps">
+        <attribute name="app.dir"/>
+        <attribute name="base.dir" default="${basedir}"/>
+        <sequential>
+            <java classname="com.caucho.jsp.JspCompiler" fork="true">
+                <classpath refid="jspc.classpath"/>
+                <arg line="-app-dir @{app.dir}"/>
+            </java>
+        </sequential>
+    </macrodef>-->
+
+    <target name="init">
+        <mkdir dir="${class.dir}"/>
+        <mkdir dir="${RESIN_WEBAPPS}"/>
+    </target>
+
+    <target name="get-version">
+        <java classpath="${class.dir}" classname="${versionClass}"/>
+    </target>
+
+    <target name="get-version-property" unless="label">
+        <java classpath="${class.dir}" classname="${versionClass}" outputproperty="label"/>
+        <echo>Label: "${label}"</echo>
+    </target>
+
+    <target name="compile" depends="compile-only,copy-to-classes"/>
+
+    <path id="lib-jars">
+        <fileset dir="lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="compile-only" depends="init">
+        <javac srcdir="jsrc" destdir="${class.dir}" debug="on" encoding="UTF-8" fork="true" memoryinitialsize="512m"
+               memorymaximumsize="1024m">
+            <classpath refid="lib-jars"/>
+        </javac>
+    </target>
+
+    <target name="copy-to-classes">
+        <copy todir="${class.dir}">
+            <fileset dir="jsrc" includes="**/*.xml"/>
+            <fileset dir="jsrc" includes="**/*.properties"/>
+            <fileset dir="jsrc" includes="**/*.policy"/>
+        </copy>
+    </target>
+
+    <target name="clean">
+        <delete dir="${class.dir}"/>
+    </target>
+
+    <macrodef name="delete-app">
+        <attribute name="webapp.name"/>
+        <sequential>
+            <antcall target="clean"/>
+            <delete quiet="true" failonerror="false" dir="${RESIN_WEBAPPS}/@{webapp.name}"/>
+        </sequential>
+    </macrodef>
+
+    <target name="delete-datapartner">
+        <delete-app webapp.name="datapartner"/>
+    </target>
+
+    <target name="deletebuild" depends="clean,delete-datapartner"/>
+
+    <!-- LOCAL EXECUTION -->
+
+    <target name="local-prep" depends="compile-only,replace-tokens,copy-to-classes"/>
+
+    <macrodef name="deploy-local">
+        <attribute name="webapp.name"/>
+        <sequential>
+            <antcall target="local-prep"/>
+            <make-war appname="@{webapp.name}"/>
+            <copy file="${RESIN_WEBAPPS}/@{webapp.name}.war" todir="${DEPLOYED_RESIN_WEBAPPS}"/>
+            <echo message="webapp @{webapp.name} deployed in ${DEPLOYED_RESIN_WEBAPPS}"/>
+        </sequential>
+    </macrodef>
+
+    <target name="datapartner">
+        <deploy-local webapp.name="datapartner"/>
+    </target>
+    <!-- BUILD AND PACKAGE -->
+
+    <target name="cleanbuild" depends="deletebuild,build-all"/>
+    <target name="build-all" depends="compile,datapartner-war"/>
+    <target name="fullbuild" depends="cleanbuild"/>
+
+    <macrodef name="make-war">
+        <attribute name="appname"/>
+        <sequential>
+            <war webxml="web/@{appname}/WEB-INF/web.xml"
+                 destfile="${RESIN_WEBAPPS}/@{appname}.war" duplicate="fail">
+                <classes dir="classes" excludes="**/.svn/**,*.log,*.log.lck,.classpath,.project,logger.properties"/>
+                <classes dir="Data" includes="**/*.*"/>
+
+                <lib dir="lib" includes="*.jar" />
+                <webinf dir="web/@{appname}/WEB-INF" includes="*.xml,*.tld,work/**"/>
+                <fileset dir="web/@{appname}" includes="**/*.*" excludes="WEB-INF/**"/>
+            </war>
+        </sequential>
+    </macrodef>
+
+    <target name="datapartner-war">
+        <make-war appname="datapartner"/>
+    </target>
+
+    <target name="archive" depends="clean, local-prep">
+        <jar destfile="dist/code.jar" basedir="classes"/>
+    </target>
+</project>
