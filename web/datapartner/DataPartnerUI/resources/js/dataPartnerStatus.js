@@ -16,7 +16,7 @@ function getDataPartnerList(file) {
 
 $(document).ready(
     function(){
-    var table = getDataPartnerList("data/requestFinderResult.csv");
+    var table = getDataPartnerList("dataPartnerUI/data/requestFinderResult.csv");
         var list = document.getElementById("resultantRowValue");
         for (var i = 1; i < table.length; i++) {
             var row = table[i];

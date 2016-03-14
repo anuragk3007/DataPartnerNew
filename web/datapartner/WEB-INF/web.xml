@@ -10,12 +10,12 @@
     </servlet>
 
     <servlet>
-        <servlet-name>datapartner</servlet-name>
-        <jsp-file>datapartner/DataPartnerUI/index.html</jsp-file>
+        <servlet-name>requestcheck</servlet-name>
+        <jsp-file>DataPartnerUI/index.html</jsp-file>
         <load-on-startup>10</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>datapartner</servlet-name>
-        <url-pattern>/datapartner</url-pattern>
+        <servlet-name>requestcheck</servlet-name>
+        <url-pattern>/requestcheck</url-pattern>
     </servlet-mapping>
 </web-app>
