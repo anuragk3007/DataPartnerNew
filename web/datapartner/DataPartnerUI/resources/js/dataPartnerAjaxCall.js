@@ -14,7 +14,7 @@ $(document).ready(function () {
         dataString = "dataPartner=" + dataPartner;
 
         var requestIds = $("textarea#requestIdList").val();
-        dataString = "requestIdList=" + requestIds;
+        dataString = dataString + "&requestIdList=" + requestIds;
 
         /*make the AJAX request, dataType is set to json
          meaning we are expecting JSON data in response from the server*/

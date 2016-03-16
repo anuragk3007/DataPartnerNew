@@ -18,4 +18,14 @@
         <servlet-name>requestcheck</servlet-name>
         <url-pattern>/requestcheck</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RequestHandler</servlet-name>
+        <servlet-class>servlet.RequestHandler</servlet-class>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RequestHandler</servlet-name>
+        <url-pattern>/RequestHandler</url-pattern>
+    </servlet-mapping>
 </web-app>

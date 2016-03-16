@@ -30,10 +30,10 @@ public class RequestHandler extends HttpServlet {
         while (paramNameList.hasMoreElements()) {
             String parameterName = (String) paramNameList.nextElement();
             String[] paramValueList = request.getParameterValues(parameterName);
-            if (paramValueList.length == 0) {
+            if (paramValueList.length != 0) {
                 if (parameterName.equalsIgnoreCase("dataPartner")) {
                     dataPartnerName = paramValueList[0];
-                } else if (parameterName.equalsIgnoreCase("requestIds")) {
+                } else if (parameterName.equalsIgnoreCase("requestIdList")) {
                     requestIdList.addAll(Arrays.asList(paramValueList[0].split("\n")));
                 }
             }
