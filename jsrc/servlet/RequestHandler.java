@@ -7,6 +7,8 @@ import model.DataPartnerDataVO;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
+import service.DataPartnerSearchService;
+import service.DataPartnerSearchServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +26,13 @@ public class RequestHandler extends HttpServlet {
     private String dataPartnerName;
     private List<String> requestIdList;
     private Set<DataPartnerDataVO> searchQueryResult = new TreeSet<>();
+
+    private DataPartnerSearchService searchService;
+
+    public RequestHandler() {
+        searchService = new DataPartnerSearchServiceImpl();
+    }
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Enumeration paramNameList = request.getParameterNames();
         requestIdList = new ArrayList<>();
@@ -38,6 +47,8 @@ public class RequestHandler extends HttpServlet {
                 }
             }
         }
+
+        searchQueryResult.addAll(searchService.getDataPartnerForRequest(dataPartnerName, requestIdList.get(0)));
         /*Place a call to service for elastic search dataPartnerName and requestIdList*/
 
 
@@ -46,7 +57,7 @@ public class RequestHandler extends HttpServlet {
         Gson gson = new Gson();
         JSONArray jsonResultList = new JSONArray();
         ObjectMapper mapper = new ObjectMapper();
-        for (DataPartnerDataVO result: searchQueryResult) {
+        for (DataPartnerDataVO result : searchQueryResult) {
             String jsonObject = mapper.writeValueAsString(result);
             jsonResultList.put(jsonObject);
         }

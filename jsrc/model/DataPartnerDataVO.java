@@ -7,7 +7,7 @@ import java.util.Set;
  * Created by kanchan.chowdhary
  * Date: 3/10/2016.
  */
-public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>{
+public class DataPartnerDataVO implements Comparable<DataPartnerDataVO> {
     private final String dataPartnerName;
     private final String requestId;
     private Set<String> matchedBehaviorIdList;
@@ -64,7 +64,7 @@ public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>{
     }
 
     public boolean isFound() {
-        return isFound;
+        return matchedBehaviorIdList.isEmpty();
     }
 
     public void setFound(boolean found) {
@@ -72,7 +72,7 @@ public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>{
     }
 
     public boolean isMatched() {
-        return isMatched;
+        return !matchedBehaviorIdList.isEmpty();
     }
 
     public void addBehavior(String behaviorId) {
