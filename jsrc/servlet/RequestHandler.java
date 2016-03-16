@@ -1,7 +1,12 @@
 package servlet;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import model.DataPartnerDataVO;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,12 +41,19 @@ public class RequestHandler extends HttpServlet {
         /*Place a call to service for elastic search dataPartnerName and requestIdList*/
 
 
-        response.setContentType("text/plain");
+        response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        StringBuilder dataPartnerSearchData = new StringBuilder();
-        for (DataPartnerDataVO obj : searchQueryResult) {
-            dataPartnerSearchData.append(obj.getRequestId()).append('\t').append(obj.getStatus()).append("!");
+        Gson gson = new Gson();
+        JSONArray jsonResultList = new JSONArray();
+        ObjectMapper mapper = new ObjectMapper();
+        for (DataPartnerDataVO result: searchQueryResult) {
+            String jsonObject = mapper.writeValueAsString(result);
+            jsonResultList.put(jsonObject);
         }
-        response.getWriter().write(dataPartnerSearchData.toString());
+        JsonElement jsonElement = gson.toJsonTree(jsonResultList);
+        JsonObject responseObject = new JsonObject();
+        responseObject.addProperty("success", true);
+        responseObject.add("resultList", jsonElement);
+        response.getWriter().print(responseObject);
     }
 }

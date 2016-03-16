@@ -11,17 +11,23 @@ public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>{
     private final String dataPartnerName;
     private final String requestId;
     private Set<String> matchedBehaviorIdList;
+    private boolean isFound;
+    private boolean isMatched;
 
     public DataPartnerDataVO(String dataPartnerName, String requestId) {
         this.dataPartnerName = dataPartnerName;
         this.requestId = requestId;
         matchedBehaviorIdList = new HashSet<>();
+        isFound = false;
+        isMatched = false;
     }
 
     public DataPartnerDataVO(String dataPartnerName, String requestId, Set<String> matchedBehaviorIdList) {
         this.dataPartnerName = dataPartnerName;
         this.requestId = requestId;
         this.matchedBehaviorIdList = matchedBehaviorIdList;
+        isFound = false;
+        isMatched = false;
     }
 
     @Override
@@ -57,7 +63,20 @@ public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>{
         return matchedBehaviorIdList;
     }
 
+    public boolean isFound() {
+        return isFound;
+    }
+
+    public void setFound(boolean found) {
+        isFound = found;
+    }
+
+    public boolean isMatched() {
+        return isMatched;
+    }
+
     public void addBehavior(String behaviorId) {
+        isMatched = true;
         matchedBehaviorIdList.add(behaviorId);
     }
 
