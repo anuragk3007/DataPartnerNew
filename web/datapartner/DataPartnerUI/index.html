@@ -15,6 +15,7 @@
 
     <link href="dataPartnerUI/resources/css/custom.css" rel="stylesheet" type="text/css">
     <script src="dataPartnerUI/resources/js/dataPartnerIndex.js"></script>
+    <script src="dataPartnerUI/resources/js/dataPartnerAjaxCall.js"></script>
 </head>
 
 <body>
@@ -70,6 +71,35 @@
                                value="Check Request" style="margin-left:-15px">
                     </div>
                 </form>
+                <!--div will be visible after result is arrived so resultDiv-->
+                <div class="col-xs-12" id="resultDiv" name="resultDiv" style="visibility: hidden">
+                    <!--margin div-->
+                    <div class="col-xs-12" style="height:10px"></div>
+
+                    <!--div to provide summary & download button-->
+                    <div class="col-xs-12" align="center"><Strong>Summary</Strong>
+                        <!--download div-->
+                        <div class="col=xs-4" align="center" style="float: right">
+                            <a href="data/requestFinderResult.csv" download="requestFinderResult.csv">Download</a>
+                        </div>
+                        <!--download div ends here-->
+                    </div>
+                    <!--summary div ends-->
+                    <!--table to display result-->
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Request Id</th>
+                            <th>Remarks</th>
+                            <th>Behavior List</th>
+                        </tr>
+                        </thead>
+                        <tbody id="resultantRowValue" name="resultantRowValue">
+                        </tbody>
+                    </table>
+                    <!--table ends here-->
+                </div>
+                <!--resultDiv ends here-->
             </div>
         </div>
     </div>
