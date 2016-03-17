@@ -4,6 +4,7 @@ import elasticsearch.ElasticSearchTransportClient;
 import model.DataPartnerDataVO;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 
@@ -44,7 +45,27 @@ public class DataPartnerDaoImpl implements DataPartnerDao {
 
     @Override
     public DataPartnerDataVO getDataPartnerForRequestIdForDate(String dataPartner, String requestId, String date) {
-        return null;
+        DataPartnerDataVO dataVO = null;
+        Client elasticSearchClient=new ElasticSearchTransportClient().getElasticSearchTransportClient();
+        SearchResponse response = elasticSearchClient.prepareSearch(dataPartner).setTypes(date)
+                .setQuery(QueryBuilders.matchQuery("requestId", requestId)).execute()
+                .actionGet();
+
+        SearchHits searchHits = response.getHits();
+        System.out.println(searchHits.getTotalHits());
+        for (SearchHit searchHit : searchHits.getHits()) {
+            Map<String, Object> sources = searchHit.getSource();
+            ArrayList<String> behs = (ArrayList)sources.get("behaviorList");
+            Set<String> behaviorIds = new HashSet<>();
+            behaviorIds.addAll(behs);
+             dataVO = new DataPartnerDataVO((String) sources.get("dataPartnerName"),
+                    (String) sources.get("requestId"), behaviorIds);
+
+            System.out.println(searchHit.getSourceAsString());
+        }
+
+        elasticSearchClient.close();
+        return dataVO;
     }
 
     @Override
@@ -58,6 +79,6 @@ public class DataPartnerDaoImpl implements DataPartnerDao {
     }
 
     public static void main(String[] args) {
-        new DataPartnerDaoImpl().getDataPartnerForRequestId("adobe", "hello");
+        new DataPartnerDaoImpl().getDataPartnerForRequestIdForDate("adobe","1721133", "16-03-2016");
     }
 }

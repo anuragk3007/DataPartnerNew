@@ -51,7 +51,7 @@ $(document).ready(function () {
                     }
                 } else {
                     $("#resultDiv").html("<div class='col-xs-12' align='center'>" +
-                        "<Strong>Data not available</Strong></div>");
+                    "<Strong>Data not available</Strong></div>");
                 }
             }
         });
@@ -61,6 +61,7 @@ $(document).ready(function () {
 function createResultDivElements(resultDivId) {
     var resultDiv = document.getElementById(resultDivId);
     //Emptying the div
+    resultDiv.re
     while (resultDiv.firstChild) {
         resultDiv.removeChild(resultDiv.firstChild);
     }
@@ -89,14 +90,14 @@ function createResultDivElements(resultDivId) {
     downloadForm.method = "post";
     // download link
     /*var link = document.createElement("a");
-    link.href = "dataPartnerUI/data/RequestFinderResult.csv";
-    link.id = "downloadLink";
-    link.name ="downloadLink";
-    link.onclick="return downloadSummary();"
-    link.download = "requestFinderResult.csv";
-    text = document.createTextNode("Download");
-    link.appendChild(text);
-    downloadDiv.appendChild(link);*/
+     link.href = "dataPartnerUI/data/RequestFinderResult.csv";
+     link.id = "downloadLink";
+     link.name ="downloadLink";
+     link.onclick="return downloadSummary();"
+     link.download = "requestFinderResult.csv";
+     text = document.createTextNode("Download");
+     link.appendChild(text);
+     downloadDiv.appendChild(link);*/
 
     // download button
     var button = document.createElement("input");

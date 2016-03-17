@@ -24,7 +24,7 @@ public class DataPartnerSearchServiceImpl implements DataPartnerSearchService {
 
     @Override
     public DataPartnerDataVO getDataPartnerForRequestForDate(String dataPartner, String requestId, String date) {
-        return null;
+        return dataPartnerDao.getDataPartnerForRequestIdForDate(dataPartner, requestId, date);
     }
 
     @Override

@@ -14,8 +14,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -26,9 +26,6 @@ import java.util.*;
  */
 public class RequestHandler extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(RequestHandler.class);
-    private String dataPartnerName;
-    private List<String> requestIdList;
-    private Set<DataPartnerDataVO> searchQueryResult = new TreeSet<>();
 
     private DataPartnerSearchService searchService;
 
@@ -38,7 +35,9 @@ public class RequestHandler extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Enumeration paramNameList = request.getParameterNames();
-        requestIdList = new ArrayList<>();
+        String dataPartnerName = "";
+        Set<DataPartnerDataVO> searchQueryResult = new TreeSet<>();
+        List<String> requestIdList = new ArrayList<>();
         String requestType = "";
         while (paramNameList.hasMoreElements()) {
             String parameterName = (String) paramNameList.nextElement();
@@ -53,11 +52,19 @@ public class RequestHandler extends HttpServlet {
                 }
             }
         }
-        System.out.println("RequestType: "+requestType);
+        System.out.println("RequestType: " + requestType);
         if (requestType.equalsIgnoreCase("query")) {
-//        searchQueryResult.addAll(searchService.getDataPartnerForRequest(dataPartnerName, requestIdList.get(0)));
-        /*Place a call to service for elastic search dataPartnerName and requestIdList*/
-            searchQueryResult.addAll(getQueryResult());
+            String date = "16-03-2016";
+
+            for (String requestId : requestIdList) {
+                DataPartnerDataVO dataVO = searchService.getDataPartnerForRequestForDate(dataPartnerName, requestId, date);
+                if (dataVO != null) {
+                    searchQueryResult.add(dataVO);
+                } else {
+                    searchQueryResult.add(new DataPartnerDataVO(dataPartnerName, requestId));
+                }
+            }
+
 
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -74,7 +81,7 @@ public class RequestHandler extends HttpServlet {
             responseObject.addProperty("success", true);
             responseObject.add("resultList", jsonElement);
             response.getWriter().print(responseObject);
-        } else if (requestType.equalsIgnoreCase("download")){
+        } else if (requestType.equalsIgnoreCase("download")) {
             System.out.println("Download link clicked");
             File resultFile = new File("dataPartnerUI/data/RequestFinderResult.csv");
             resultFile.delete();
@@ -107,7 +114,6 @@ public class RequestHandler extends HttpServlet {
         obj.addBehavior("adbeh11");
         result.add(obj);
         obj = new DataPartnerDataVO("adobe", "adb3");
-        obj.setFound(false);
         result.add(obj);
         return result;
     }
