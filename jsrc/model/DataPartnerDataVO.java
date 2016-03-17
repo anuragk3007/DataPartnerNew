@@ -18,7 +18,15 @@ public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>{
         this.dataPartnerName = dataPartnerName;
         this.requestId = requestId;
         matchedBehaviorIdList = new HashSet<>();
-        isFound = false;
+        isFound = true;
+        isMatched = false;
+    }
+
+    public DataPartnerDataVO(String dataPartnerName, String requestId, boolean isFound) {
+        this.dataPartnerName = dataPartnerName;
+        this.requestId = requestId;
+        matchedBehaviorIdList = new HashSet<>();
+        this.isFound = isFound;
         isMatched = false;
     }
 
@@ -26,8 +34,8 @@ public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>{
         this.dataPartnerName = dataPartnerName;
         this.requestId = requestId;
         this.matchedBehaviorIdList = matchedBehaviorIdList;
-        isFound = false;
-        isMatched = false;
+        isFound = true;
+        isMatched = true;
     }
 
     @Override
@@ -81,15 +89,20 @@ public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>{
     }
 
     public String getStatus() {
-        if (matchedBehaviorIdList.isEmpty()) {
-            return "Request Found but not Matched";
-        } else {
-            return "Request Found and Matched\t" + matchedBehaviorIdList.toString().replaceAll("[\\[\\]]*", "").replaceAll(", ", ";");
+        String status = "Request not found";
+        if (isFound) {
+            if (!isMatched) {
+                status = "Request Found but not Matched";
+            } else {
+                status = "Request Found and Matched";/*\t" + matchedBehaviorIdList.toString().replaceAll("[\\[\\]]*", "").replaceAll(", ", ";");*/
+            }
         }
+        return status;
     }
 
     @Override
     public String toString() {
-        return dataPartnerName + "\t" + requestId + "\t" + getStatus();
+        return '\"'+requestId+"\","+getStatus()+','+matchedBehaviorIdList.toString().replaceAll("[\\[\\]]*", "").replaceAll(", ", ";")+'\n';
+//        return dataPartnerName + "\t" + requestId + "\t" + getStatus();
     }
 }

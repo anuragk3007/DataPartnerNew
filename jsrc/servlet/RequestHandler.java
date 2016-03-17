@@ -14,6 +14,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -36,6 +39,7 @@ public class RequestHandler extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Enumeration paramNameList = request.getParameterNames();
         requestIdList = new ArrayList<>();
+        String requestType = "";
         while (paramNameList.hasMoreElements()) {
             String parameterName = (String) paramNameList.nextElement();
             String[] paramValueList = request.getParameterValues(parameterName);
@@ -44,27 +48,68 @@ public class RequestHandler extends HttpServlet {
                     dataPartnerName = paramValueList[0];
                 } else if (parameterName.equalsIgnoreCase("requestIdList")) {
                     requestIdList.addAll(Arrays.asList(paramValueList[0].split("\n")));
+                } else if (parameterName.equalsIgnoreCase("requestType")) {
+                    requestType = paramValueList[0];
                 }
             }
         }
-
-        searchQueryResult.addAll(searchService.getDataPartnerForRequest(dataPartnerName, requestIdList.get(0)));
+        System.out.println("RequestType: "+requestType);
+        if (requestType.equalsIgnoreCase("query")) {
+//        searchQueryResult.addAll(searchService.getDataPartnerForRequest(dataPartnerName, requestIdList.get(0)));
         /*Place a call to service for elastic search dataPartnerName and requestIdList*/
+            searchQueryResult.addAll(getQueryResult());
 
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        Gson gson = new Gson();
-        JSONArray jsonResultList = new JSONArray();
-        ObjectMapper mapper = new ObjectMapper();
-        for (DataPartnerDataVO result : searchQueryResult) {
-            String jsonObject = mapper.writeValueAsString(result);
-            jsonResultList.put(jsonObject);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            Gson gson = new Gson();
+            JSONArray jsonResultList = new JSONArray();
+            ObjectMapper mapper = new ObjectMapper();
+            for (DataPartnerDataVO result : searchQueryResult) {
+                System.out.println(result.getRequestId());
+                String jsonObject = mapper.writeValueAsString(result);
+                jsonResultList.put(jsonObject);
+            }
+            JsonElement jsonElement = gson.toJsonTree(jsonResultList);
+            JsonObject responseObject = new JsonObject();
+            responseObject.addProperty("success", true);
+            responseObject.add("resultList", jsonElement);
+            response.getWriter().print(responseObject);
+        } else if (requestType.equalsIgnoreCase("download")){
+            System.out.println("Download link clicked");
+            File resultFile = new File("dataPartnerUI/data/RequestFinderResult.csv");
+            resultFile.delete();
+            resultFile.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(resultFile));
+            try {
+                writer.write("Request Id,Remarks,Behavior List\n");
+                for (DataPartnerDataVO obj : searchQueryResult) {
+                    writer.write(obj.toString());
+                    writer.flush();
+                }
+            } finally {
+                writer.close();
+            }
+            response.setContentType("csv/application");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().print(resultFile);
         }
-        JsonElement jsonElement = gson.toJsonTree(jsonResultList);
-        JsonObject responseObject = new JsonObject();
-        responseObject.addProperty("success", true);
-        responseObject.add("resultList", jsonElement);
-        response.getWriter().print(responseObject);
     }
+
+    public TreeSet<DataPartnerDataVO> getQueryResult() {
+        TreeSet<DataPartnerDataVO> result = new TreeSet<>();
+        DataPartnerDataVO obj = new DataPartnerDataVO("adobe", "adb2");
+        obj.addBehavior("adbeh21");
+        obj.addBehavior("adbeh22");
+        result.add(obj);
+        obj = new DataPartnerDataVO("adobe", "adb0");
+        result.add(obj);
+        obj = new DataPartnerDataVO("adobe", "adb1");
+        obj.addBehavior("adbeh11");
+        result.add(obj);
+        obj = new DataPartnerDataVO("adobe", "adb3");
+        obj.setFound(false);
+        result.add(obj);
+        return result;
+    }
+
 }

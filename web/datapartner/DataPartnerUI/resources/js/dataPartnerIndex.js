@@ -23,7 +23,7 @@ $(document).ready(
             var link = document.createElement("a");
             var text = document.createTextNode(opt);
             link.appendChild(text);
-            //link.href = "";
+            link.href = "#";
             link.id = opt;
             link.name = opt;
             link.value = opt;
