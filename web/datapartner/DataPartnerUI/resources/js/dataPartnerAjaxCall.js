@@ -23,37 +23,41 @@ $(document).ready(function () {
             url: "RequestHandler",
             data: dataString,
             dataType: "json",
-
             //if received a response from the server
             success: function (data, textStatus, jqXHR) {
+                //console.log("Before Parse: "+data.toString());
+                //var jsonData = JSON.parse(data);
+                //console.log("Response Data: "+jsonData.toString());
 
-                var jsonData = JSON.parse(data);
-                if (jsonData.success) {
-                    var tableBody = createResultDivElements("resultDiv")
-                    for(var i=0; i<jsonData.resultList.length; i++) {
-                        var dataPartnerData = jsonData.resultList[i];
-                        var requestId = document.createTextNode(dataPartnerData.getRequestid);
-                        var remark = document.createTextNode("Request not found");
-                        var behaviorList = document.createTextNode("");
-                        if(dataPartnerData.isFound) {
-                            if(dataPartnerData.isMatched) {
-                                remark = document.createTextNode("Request Found and Matched");
-                                behaviorList = document.createTextNode(dataPartnerData.getBehaviorList().toString()
-                                    .replaceAll("[\\[\\]]*", "").replaceAll(", ", ";"));
-                            } else {
-                                remark = document.createTextNode("Request Found but not Matched");
-                            }
-                        }
+                if (data.success) {
+                    console.log("inside success");
+                    var tableBody = createResultDivElements("resultDiv");
+                    console.log(data.resultList);
+                    for(var i=0; i<data.resultList.myArrayList.length; i++) {
+                        var dataPartnerData = data.resultList.myArrayList[i];
+                        dataPartnerData = JSON.parse(dataPartnerData);
+                        //console.log("Object "+i+" request Id: "+dataPartnerData.requestId);
+                        //console.log("Object "+i+" status: "+dataPartnerData.status);
+                        //console.log("Object "+i+" behavior list: "+dataPartnerData.behaviorList);
+                        var requestId = document.createTextNode(dataPartnerData.requestId);
+                        var remark = document.createTextNode(dataPartnerData.status);
+                        var behaviorList = document.createTextNode(dataPartnerData.behaviorList);
 
                         var tr = document.createElement("tr");
-                        var td = document.createElement("td").appendChild(requestId);
+                        var td = document.createElement("td");
+                        td.appendChild(requestId);
                         tr.appendChild(td);
-                        td = document.createElement("td").appendChild(remark);
+                        td = document.createElement("td");
+                        td.appendChild(remark);
                         tr.appendChild(td);
-                        td = document.createElement("td").appendChild(behaviorList);
+                        td = document.createElement("td");
+                        td.appendChild(behaviorList);
                         tr.appendChild(td);
                         tableBody.appendChild(tr);
                     }
+                    console.log(tableBody);
+                    console.log("********************************");
+                    console.log(document.getElementById("resultDiv"));
                 } else {
                     $("#resultDiv").html("<div class='col-xs-12' align='center'>" +
                         "<Strong>Data not available</Strong></div>");
@@ -68,17 +72,16 @@ function createResultDivElements(resultDivId) {
     resultDiv.style.visibility = "visible";
     //creating margin div
     var marginDiv = document.createElement("div");
-    marginDiv.class = "col-xs-12";
+    marginDiv.className = "col-xs-12";
     marginDiv.style.height = "10px";
 
     //Summary Ddiv
     var summaryDiv = document.createElement("div");
     summaryDiv.class = "col-xs-12";
     summaryDiv.align = "center";
-    var strong = document.createElament("Strong");
     var text = document.createTextNode("Summary");
-    strong.appendChild(text);
-    summaryDiv.appendChild(strong);
+    text.value = "bold";
+    summaryDiv.appendChild(text);
 
     // download div
     var downloadDiv = document.createElement("div");
@@ -95,14 +98,17 @@ function createResultDivElements(resultDivId) {
 
     // table to show result
     var table = document.createElement("table");
-    table.class = "table table-bordered";
-    var thead = document.createElement("thaead");
+    table.className = "table table-bordered";
+    var thead = document.createElement("thead");
     var tr = document.createElement("tr");
-    var th = document.createElement("th").appendChild(document.createTextNode("Request Id"));
+    var th = document.createElement("th");
+    th.appendChild(document.createTextNode("Request Id"));
     tr.appendChild(th);
-    th = document.createElement("th").appendChild(document.createTextNode("Remarks"));
+    th = document.createElement("th");
+    th.appendChild(document.createTextNode("Remarks"));
     tr.appendChild(th);
-    th = document.createElement("th").appendChild(document.createTextNode("Behavior List"));
+    th = document.createElement("th");
+    th.appendChild(document.createTextNode("Behavior List"));
     tr.appendChild(th);
     thead.appendChild(tr);
     table.appendChild(thead);
@@ -111,9 +117,13 @@ function createResultDivElements(resultDivId) {
     tbody.name = "resultantRowValue";
     table.appendChild(tbody);
 
+    var tableHolder = document.createElement("div");
+    downloadDiv.className = "col-xs-12";
+    downloadDiv.align = "center";
+    tableHolder.appendChild(table);
     resultDiv.appendChild(marginDiv);
     resultDiv.appendChild(summaryDiv);
-    resultDiv.appendChild(table);
+    resultDiv.appendChild(tableHolder);
 
     return tbody;
 }

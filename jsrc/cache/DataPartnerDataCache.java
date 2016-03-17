@@ -27,7 +27,7 @@ public class DataPartnerDataCache {
                 String dataPartner = values[0];
                 String requestId = values[1];
                 String[] behaviorsString = values[values.length - 1].split(",");
-                Set<String> behaviorIds = new HashSet<>();
+                HashSet<String> behaviorIds = new HashSet<>();
                 behaviorIds.addAll(Arrays.asList(behaviorsString));
                 DataPartnerDataVO dataVO = new DataPartnerDataVO(dataPartner, requestId, behaviorIds);
 

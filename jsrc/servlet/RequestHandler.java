@@ -38,12 +38,26 @@ public class RequestHandler extends HttpServlet {
                 }
             }
         }
+        System.out.println("DataPartner Name: "+dataPartnerName);
+        System.out.println("RequestIds: "+requestIdList.toString());
         /*Place a call to service for elastic search dataPartnerName and requestIdList*/
-
+        DataPartnerDataVO obj = new DataPartnerDataVO("bluekai", "1234");
+        obj.setFound(true);
+        obj.addBehavior("temp1");
+        searchQueryResult.add(obj);
+        obj = new DataPartnerDataVO("datalogix", "asdf");
+        obj.setFound(true);
+        obj.addBehavior("beh1");
+        obj.addBehavior("beh2");
+        searchQueryResult.add(obj);
+        obj = new DataPartnerDataVO("adobe", "12as");
+        obj.setFound(false);
+        searchQueryResult.add(obj);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         Gson gson = new Gson();
+        /*temprorily commented*/
         JSONArray jsonResultList = new JSONArray();
         ObjectMapper mapper = new ObjectMapper();
         for (DataPartnerDataVO result: searchQueryResult) {
@@ -52,8 +66,15 @@ public class RequestHandler extends HttpServlet {
         }
         JsonElement jsonElement = gson.toJsonTree(jsonResultList);
         JsonObject responseObject = new JsonObject();
+
+        /*JsonObject responseObject = new JsonObject();
+        obj = new DataPartnerDataVO("bluekai", "1234");
+        obj.setFound(true);
+        obj.addBehavior("beh1234");
+        JsonElement jsonElement = gson.toJsonTree(obj);*/
         responseObject.addProperty("success", true);
         responseObject.add("resultList", jsonElement);
-        response.getWriter().print(responseObject);
+        System.out.println("Json Response Object: "+responseObject.toString());
+        response.getWriter().println(responseObject);
     }
 }
