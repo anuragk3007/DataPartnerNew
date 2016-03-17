@@ -23,11 +23,9 @@ $(document).ready(function () {
             url: "RequestHandler",
             data: dataString,
             dataType: "json",
+
             //if received a response from the server
             success: function (data, textStatus, jqXHR) {
-                //console.log("Before Parse: "+data.toString());
-                //var jsonData = JSON.parse(data);
-                //console.log("Response Data: "+jsonData.toString());
 
                 if (data.success) {
                     console.log("inside success");
@@ -55,12 +53,9 @@ $(document).ready(function () {
                         tr.appendChild(td);
                         tableBody.appendChild(tr);
                     }
-                    console.log(tableBody);
-                    console.log("********************************");
-                    console.log(document.getElementById("resultDiv"));
                 } else {
                     $("#resultDiv").html("<div class='col-xs-12' align='center'>" +
-                        "<Strong>Data not available</Strong></div>");
+                    "<Strong>Data not available</Strong></div>");
                 }
             }
         });

@@ -11,7 +11,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static utils.DataPartnerConstants.DATA_PARTNER_DATA_TTL;
 import static utils.DataPartnerConstants.DATA_PARTNER_REPORT_DATE_FORMAT;
@@ -47,8 +50,7 @@ public class DataPartnerDataReader {
 
                 String jsonMsg = objectMapper_.writeValueAsString(dataVO);
                 String elasticSearchType = DATA_PARTNER_REPORT_DATE_FORMAT.format(new Date());
-                String uniqueId = String.valueOf((dataPartner + ":" + requestId).hashCode());
-                ElasticSearchDocument document = new ElasticSearchDocument(DataPartnerConstants.DATA_PARTNER_INDEX, elasticSearchType, uniqueId, jsonMsg);
+                ElasticSearchDocument document = new ElasticSearchDocument(dataPartner, elasticSearchType, requestId, jsonMsg);
                 client_.index(document);
             }
         }

@@ -2,13 +2,15 @@ package service;
 
 import model.DataPartnerDataVO;
 
+import java.util.List;
+
 /**
  * Created by anurag.krishna
  * Date: 3/15/2016.
  */
 public interface DataPartnerSearchService {
 
-    public DataPartnerDataVO getDataPartnerForRequest(String dataPartner, String requestId);
+    public List<DataPartnerDataVO> getDataPartnerForRequest(String dataPartner, String requestId);
 
     public DataPartnerDataVO getDataPartnerForRequestForDate(String dataPartner, String requestId, String date);
 

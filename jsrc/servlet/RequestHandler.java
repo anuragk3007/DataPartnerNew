@@ -7,6 +7,8 @@ import model.DataPartnerDataVO;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
+import service.DataPartnerSearchService;
+import service.DataPartnerSearchServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +26,13 @@ public class RequestHandler extends HttpServlet {
     private String dataPartnerName;
     private List<String> requestIdList;
     private Set<DataPartnerDataVO> searchQueryResult = new TreeSet<>();
+
+    private DataPartnerSearchService searchService;
+
+    public RequestHandler() {
+        searchService = new DataPartnerSearchServiceImpl();
+    }
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Enumeration paramNameList = request.getParameterNames();
         requestIdList = new ArrayList<>();
@@ -38,43 +47,24 @@ public class RequestHandler extends HttpServlet {
                 }
             }
         }
-        System.out.println("DataPartner Name: "+dataPartnerName);
-        System.out.println("RequestIds: "+requestIdList.toString());
+
+        searchQueryResult.addAll(searchService.getDataPartnerForRequest(dataPartnerName, requestIdList.get(0)));
         /*Place a call to service for elastic search dataPartnerName and requestIdList*/
-        DataPartnerDataVO obj = new DataPartnerDataVO("bluekai", "1234");
-        obj.setFound(true);
-        obj.addBehavior("temp1");
-        searchQueryResult.add(obj);
-        obj = new DataPartnerDataVO("datalogix", "asdf");
-        obj.setFound(true);
-        obj.addBehavior("beh1");
-        obj.addBehavior("beh2");
-        searchQueryResult.add(obj);
-        obj = new DataPartnerDataVO("adobe", "12as");
-        obj.setFound(false);
-        searchQueryResult.add(obj);
+
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         Gson gson = new Gson();
-        /*temprorily commented*/
         JSONArray jsonResultList = new JSONArray();
         ObjectMapper mapper = new ObjectMapper();
-        for (DataPartnerDataVO result: searchQueryResult) {
+        for (DataPartnerDataVO result : searchQueryResult) {
             String jsonObject = mapper.writeValueAsString(result);
             jsonResultList.put(jsonObject);
         }
         JsonElement jsonElement = gson.toJsonTree(jsonResultList);
         JsonObject responseObject = new JsonObject();
-
-        /*JsonObject responseObject = new JsonObject();
-        obj = new DataPartnerDataVO("bluekai", "1234");
-        obj.setFound(true);
-        obj.addBehavior("beh1234");
-        JsonElement jsonElement = gson.toJsonTree(obj);*/
         responseObject.addProperty("success", true);
         responseObject.add("resultList", jsonElement);
-        System.out.println("Json Response Object: "+responseObject.toString());
-        response.getWriter().println(responseObject);
+        response.getWriter().print(responseObject);
     }
 }
