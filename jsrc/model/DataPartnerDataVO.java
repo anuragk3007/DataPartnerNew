@@ -1,6 +1,5 @@
 package model;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,10 +7,10 @@ import java.util.Set;
  * Created by kanchan.chowdhary
  * Date: 3/10/2016.
  */
-public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>,Serializable {
+public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>{
     private final String dataPartnerName;
     private final String requestId;
-    private HashSet<String> matchedBehaviorIdList;
+    private Set<String> matchedBehaviorIdList;
     private boolean isFound;
     private boolean isMatched;
 
@@ -19,23 +18,15 @@ public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>,Serializ
         this.dataPartnerName = dataPartnerName;
         this.requestId = requestId;
         matchedBehaviorIdList = new HashSet<>();
-        isFound = true;
+        isFound = false;
         isMatched = false;
     }
 
-    public DataPartnerDataVO(String dataPartnerName, String requestId, boolean isFound) {
-        this.dataPartnerName = dataPartnerName;
-        this.requestId = requestId;
-        matchedBehaviorIdList = new HashSet<>();
-        this.isFound = isFound;
-        isMatched = false;
-    }
-
-    public DataPartnerDataVO(String dataPartnerName, String requestId, HashSet<String> matchedBehaviorIdList) {
+    public DataPartnerDataVO(String dataPartnerName, String requestId, Set<String> matchedBehaviorIdList) {
         this.dataPartnerName = dataPartnerName;
         this.requestId = requestId;
         this.matchedBehaviorIdList = matchedBehaviorIdList;
-        isFound = true;
+        isFound = false;
         isMatched = false;
     }
 
@@ -68,7 +59,7 @@ public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>,Serializ
         return requestId;
     }
 
-    public HashSet getBehaviorList() {
+    public Set getBehaviorList() {
         return matchedBehaviorIdList;
     }
 
@@ -85,22 +76,16 @@ public class DataPartnerDataVO implements Comparable<DataPartnerDataVO>,Serializ
     }
 
     public void addBehavior(String behaviorId) {
-        isFound = true;
         isMatched = true;
         matchedBehaviorIdList.add(behaviorId);
     }
 
     public String getStatus() {
-        String status = "Request Not Found";
-        if (isFound) {
-            if (!isMatched) {
-                status= "Request Found but not Matched";
-            } else {
-                status =  "Request Found and Matched";
-                        /*\t" + matchedBehaviorIdList.toString().replaceAll("[\\[\\]]*", "").replaceAll(", ", ";");*/
-            }
+        if (matchedBehaviorIdList.isEmpty()) {
+            return "Request Found but not Matched";
+        } else {
+            return "Request Found and Matched\t" + matchedBehaviorIdList.toString().replaceAll("[\\[\\]]*", "").replaceAll(", ", ";");
         }
-        return status;
     }
 
     @Override
