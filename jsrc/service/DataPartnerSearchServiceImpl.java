@@ -28,12 +28,12 @@ public class DataPartnerSearchServiceImpl implements DataPartnerSearchService {
     }
 
     @Override
-    public DataPartnerDataVO getAllDataPartnerRequest(String dataPartner) {
-        return null;
+    public List<DataPartnerDataVO> getAllDataPartnerRequest(String dataPartner) {
+        return dataPartnerDao.getAllDataPartnerRequestIds(dataPartner);
     }
 
     @Override
-    public DataPartnerDataVO getAllDataPartnerRequestForDate(String dataPartner, String date) {
-        return null;
+    public List<DataPartnerDataVO> getAllDataPartnerRequestForDate(String dataPartner, String date) {
+        return dataPartnerDao.getAllDataPartnerRequestIdsForDate(dataPartner, date);
     }
 }

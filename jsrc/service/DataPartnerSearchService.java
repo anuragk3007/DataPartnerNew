@@ -14,7 +14,7 @@ public interface DataPartnerSearchService {
 
     public DataPartnerDataVO getDataPartnerForRequestForDate(String dataPartner, String requestId, String date);
 
-    public DataPartnerDataVO getAllDataPartnerRequest(String dataPartner);
+    public List<DataPartnerDataVO> getAllDataPartnerRequest(String dataPartner);
 
-    public DataPartnerDataVO getAllDataPartnerRequestForDate(String dataPartner, String date);
+    public List<DataPartnerDataVO> getAllDataPartnerRequestForDate(String dataPartner, String date);
 }
