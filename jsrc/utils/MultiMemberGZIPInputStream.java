@@ -6,7 +6,8 @@ import java.io.PushbackInputStream;
 import java.util.zip.GZIPInputStream;
 
 /**
- * Created by kanchan.chowdhary on 3/11/2016.
+ * Created by kanchan.chowdhary on
+ * 3/11/2016.
  */
 public class MultiMemberGZIPInputStream extends GZIPInputStream {
     public MultiMemberGZIPInputStream(InputStream in, int size) throws IOException {

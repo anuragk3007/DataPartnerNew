@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -29,7 +30,11 @@ public class DataPartnerDataCache {
                 String[] behaviorsString = values[values.length - 1].split(",");
                 HashSet<String> behaviorIds = new HashSet<>();
                 behaviorIds.addAll(Arrays.asList(behaviorsString));
-                DataPartnerDataVO dataVO = new DataPartnerDataVO(dataPartner, requestId, behaviorIds);
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                DataPartnerDataVO dataVO = new DataPartnerDataVO(format.format(new Date()), dataPartner, requestId);
+                for (String beh: behaviorIds) {
+                    dataVO.addBehavior(Integer.parseInt(beh));
+                }
 
                 Map<String, DataPartnerDataVO> requestData = dataPartnerRequestIdDataCache.get(dataPartner);
                 if (requestData == null) {

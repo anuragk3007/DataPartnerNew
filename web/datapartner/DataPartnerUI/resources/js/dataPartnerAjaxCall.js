@@ -6,16 +6,11 @@ $(document).ready(function () {
 
     //checks for the button click event
     $("#requestSubmit").click(function (e) {
+        checkForEmptyRequestList();
+        preProcessResultDiv();
         //get the form data and then serialize that
         dataString = $("#formSubmission").serialize();
-
-        dataString = "requestType=query&";
-        //get the form data using another method
-        var dataPartner = $("input#dataPartner").val();
-        dataString = dataString + "dataPartner=" + dataPartner;
-
-        var requestIds = $("textarea#requestIdList").val();
-        dataString = dataString + "&requestIdList=" + requestIds;
+        dataString = "requestType=query&" + dataString;
 
         /*make the AJAX request, dataType is set to json
          meaning we are expecting JSON data in response from the server*/
@@ -26,123 +21,93 @@ $(document).ready(function () {
             dataType: "json",
 
             //if received a response from the server
-            success: function (data, textStatus, jqXHR) {
+            success: function (data) {
 
                 if (data.success) {
-                    var tableBody = createResultDivElements("resultDiv");
+                    document.getElementById("downloadLink").href = data.resultFile;
                     var dataList = data.resultList.myArrayList;
+                    var tableBody = document.getElementById("resultTableBody");
                     for (var i = 0; i < dataList.length; i++) {
                         var dataPartnerData = JSON.parse(dataList[i]);
-                        var requestId = document.createTextNode(dataPartnerData.requestId);
-                        var remark = document.createTextNode(dataPartnerData.status);
-                        var behaviorList = document.createTextNode(dataPartnerData.behaviorList);
-
-                        var tr = document.createElement("tr");
-                        var td = document.createElement("td");
-                        td.appendChild(requestId);
-                        tr.appendChild(td);
-                        td = document.createElement("td");
-                        td.appendChild(remark);
-                        tr.appendChild(td);
-                        td = document.createElement("td");
-                        td.appendChild(behaviorList);
-                        tr.appendChild(td);
-                        tableBody.appendChild(tr);
+                        var date = dataPartnerData.logDate;
+                        var dataPartnerName = dataPartnerData.dataPartnerName;
+                        var requestId = dataPartnerData.requestId;
+                        var remarks = dataPartnerData.remarks;
+                        var behaviorList = dataPartnerData.behaviorList;
+                        var noOfBeh = behaviorList.length;
+                        if (noOfBeh != 0) {
+                            for (var j = 0; j < noOfBeh; j++) {
+                                var behaviorId = behaviorList[j].behaviorId;
+                                var topicPath = behaviorList[j].topicPath;
+                                var ucUS = behaviorList[j].userCount.usCount;
+                                var ucUK = behaviorList[j].userCount.ukCount;
+                                var td;
+                                var text;
+                                $(document).ready(function () {
+                                    var tr = document.createElement("tr");
+                                    tr.appendChild(getTableColumnForData(date));
+                                    tr.appendChild(getTableColumnForData(dataPartnerName));
+                                    tr.appendChild(getTableColumnForData(requestId));
+                                    tr.appendChild(getTableColumnForData(remarks));
+                                    tr.appendChild(getTableColumnForData(noOfBeh));
+                                    var td = getTableColumnForData(topicPath);
+                                    td.style.whiteSpace = "normal";
+                                    td.align = "justify";
+                                    tr.appendChild(td);
+                                    tr.appendChild(getTableColumnForData(ucUS));
+                                    tr.appendChild(getTableColumnForData(ucUK));
+                                    tableBody.appendChild(tr);
+                                })
+                            }
+                        } else {
+                            var tr = document.createElement("tr");
+                            tr.appendChild(getTableColumnForData(date));
+                            tr.appendChild(getTableColumnForData(dataPartnerName));
+                            tr.appendChild(getTableColumnForData(requestId));
+                            tr.appendChild(getTableColumnForData(remarks));
+                            tr.appendChild(getTableColumnForData(noOfBeh));
+                            tr.appendChild(getTableColumnForData(""));
+                            tr.appendChild(getTableColumnForData(""));
+                            tr.appendChild(getTableColumnForData(""));
+                            tableBody.appendChild(tr);
+                        }
                     }
-                } else {
-                    $("#resultDiv").html("<div class='col-xs-12' align='center'>" +
-                    "<Strong>Data not available</Strong></div>");
+                    document.getElementById("resultDiv").style.visibility = "visible";
+                    $(body).style.height = "inherit"
                 }
             }
         });
     });
 });
 
-function createResultDivElements(resultDivId) {
-    var resultDiv = document.getElementById(resultDivId);
-    //Emptying the div
-    resultDiv.re
-    while (resultDiv.firstChild) {
-        resultDiv.removeChild(resultDiv.firstChild);
+function preProcessResultDiv() {
+    document.getElementById("resultDiv").style.visibility = "hidden";
+    var tableBody = document.getElementById("resultTableBody");
+    while (tableBody.firstChild) {
+        tableBody.removeChild(tableBody.firstChild);
     }
-    resultDiv.style.visibility = "visible";
-    //creating margin div
-    var marginDiv = document.createElement("div");
-    marginDiv.className = "col-xs-12";
-    marginDiv.style.height = "10px";
-
-    //Summary Ddiv
-    var summaryDiv = document.createElement("div");
-    summaryDiv.className = "col-xs-7";
-    summaryDiv.align = "right";
-    var text = document.createTextNode("Summary");
-    text.value = "bold";
-    summaryDiv.appendChild(text);
-
-    // download div
-    var downloadDiv = document.createElement("div");
-    downloadDiv.className = "col-xs-5";
-    downloadDiv.align = "right";
-    downloadDiv.style.float = "right";
-    var downloadForm = document.createElement("form");
-    downloadForm.id = "downloadForm";
-    downloadForm.name = "downloadForm";
-    downloadForm.method = "post";
-    // download link
-    /*var link = document.createElement("a");
-     link.href = "dataPartnerUI/data/RequestFinderResult.csv";
-     link.id = "downloadLink";
-     link.name ="downloadLink";
-     link.onclick="return downloadSummary();"
-     link.download = "requestFinderResult.csv";
-     text = document.createTextNode("Download");
-     link.appendChild(text);
-     downloadDiv.appendChild(link);*/
-
-    // download button
-    var button = document.createElement("input");
-    button.type = "submit";
-    button.className = "btn btn-info btn-xs";
-    button.id = "downloadLink";
-    button.name = "downloadLink";
-    button.value = "Download";
-    var text = document.createTextNode("Download");
-    button.appendChild(text);
-    downloadForm.appendChild(button)
-    downloadDiv.appendChild(downloadForm);
-    //summaryDiv.appendChild(downloadDiv);
-
-    // table to show result
-    var table = document.createElement("table");
-    table.className = "table table-bordered";
-    var thead = document.createElement("thead");
-    var tr = document.createElement("tr");
-    var th = document.createElement("th");
-    th.appendChild(document.createTextNode("Request Id"));
-    tr.appendChild(th);
-    th = document.createElement("th");
-    th.appendChild(document.createTextNode("Remarks"));
-    tr.appendChild(th);
-    th = document.createElement("th");
-    th.appendChild(document.createTextNode("Behavior List"));
-    tr.appendChild(th);
-    thead.appendChild(tr);
-    table.appendChild(thead);
-    var tbody = document.createElement("tbody");
-    tbody.id = "resultantRowValue";
-    tbody.name = "resultantRowValue";
-    table.appendChild(tbody);
-
-    var tableHolder = document.createElement("div");
-    tableHolder.className = "col-xs-12";
-    tableHolder.align = "center";
-    tableHolder.appendChild(table);
-    resultDiv.appendChild(marginDiv);
-    resultDiv.appendChild(summaryDiv);
-    resultDiv.appendChild(downloadDiv);
-    resultDiv.appendChild(marginDiv);
-    resultDiv.appendChild(tableHolder);
-
-    return tbody;
+}
+function getTableColumnForData(text) {
+    var td = document.createElement("td");
+    td.style.whiteSpace="nowrap";
+    td.align = "center";
+    text = document.createTextNode(text);
+    td.appendChild(text);
+    return td;
 }
 
+function checkForEmptyRequestList() {
+    var text = $("#requestIdList").val();
+    if (text == "") {
+        $("#formSubmission").submit(function (e) {
+            e.preventDefault();
+        });
+    }
+    text = $("#dataPartner").val();
+    if (text == "default") {
+        alert("Select a DataPartner");
+        $("#formSubmission").submit(function (e) {
+            e.preventDefault();
+        });
+    }
+}

@@ -39,7 +39,6 @@ public class ElasticSearchRestClient extends ElasticSearchClient {
         WebTarget webTarget = restClient_.target(endPoint);
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
         invocationBuilder.accept(MediaType.APPLICATION_JSON_TYPE);
-
         Response postResponse = invocationBuilder.post(Entity.entity(document.getData(), MediaType.APPLICATION_JSON));
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Status = " + postResponse.getStatus());

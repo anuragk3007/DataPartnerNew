@@ -5,15 +5,18 @@ import model.DataPartnerDataVO;
 import java.util.List;
 
 /**
- * Created by anurag.krishna on 3/16/2016.
+ * Created by anurag.krishna on
+ * 3/16/2016.
  */
 public interface DataPartnerDao {
 
-    public List<DataPartnerDataVO> getDataPartnerForRequestId(String dataPartner, String requestId);
+    public List<String> getAllDataPartnersName();
 
-    public DataPartnerDataVO getDataPartnerForRequestIdForDate(String dataPartner, String requestId, String date);
+    public List<String> getDateListForDataPartner(String dataPartner);
 
-    public List<DataPartnerDataVO> getAllDataPartnerRequestIds(String dataPartner);
+    public DataPartnerDataVO getAllDataPartnerDataForDataPartner(String dataPartner);
 
-    public List<DataPartnerDataVO> getAllDataPartnerRequestIdsForDate(String dataPartner, String date);
+    public List<DataPartnerDataVO> getAllDataPartnerRequestIdsForDate(String date, String dataPartner);
+
+    public DataPartnerDataVO getDataPartnerForRequestIdForDate(String date, String dataPartner, String requestId);
 }

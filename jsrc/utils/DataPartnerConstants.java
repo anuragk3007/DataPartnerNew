@@ -8,7 +8,13 @@ import java.text.SimpleDateFormat;
  */
 public class DataPartnerConstants {
 
-    public static final String DATA_PARTNER_INDEX = "datapartnerreqindex";
     public static final SimpleDateFormat DATA_PARTNER_REPORT_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-    public static final int DATA_PARTNER_DATA_TTL = 7 * 24 * 60 * 60 * 1000;
+    public static final SimpleDateFormat DATA_PARTNER_UI_DATE_FORMAT = new SimpleDateFormat("MMM-dd-yyyy");
+    public static final int MILLI_SECONDS_COUNT = 24 * 60 * 60 * 1000;
+    public static final int DATA_PARTNER_DATA_TTL = 7 * MILLI_SECONDS_COUNT;
+    public static final int US_GEO_ID = 3585;
+    public static final int UK_GEO_ID = 3569;
+    public static final int THREAD_COUNT = 5;
+    public static final int DATA_MAX_BATCH_SIZE = 20;
+    public static final int MONITOR_INTERVAL = 10 * 60 * 1000;
 }

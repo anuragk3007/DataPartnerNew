@@ -10,11 +10,13 @@ import java.util.List;
  */
 public interface DataPartnerSearchService {
 
-    public List<DataPartnerDataVO> getDataPartnerForRequest(String dataPartner, String requestId);
+    public List<String> getAllDataPartnersName();
 
-    public DataPartnerDataVO getDataPartnerForRequestForDate(String dataPartner, String requestId, String date);
+    public List<String> getDateListForDataPartner(String dataPartner);
 
-    public List<DataPartnerDataVO> getAllDataPartnerRequest(String dataPartner);
+    public DataPartnerDataVO getAllDataPartnerDataForDataPartner(String dataPartner);
 
-    public List<DataPartnerDataVO> getAllDataPartnerRequestForDate(String dataPartner, String date);
+    public List<DataPartnerDataVO> getAllDataPartnerRequestForDate(String date, String dataPartner);
+
+    public DataPartnerDataVO getDataPartnerForRequestForDate(String date, String dataPartner, String requestId);
 }

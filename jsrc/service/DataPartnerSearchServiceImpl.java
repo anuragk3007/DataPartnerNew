@@ -18,22 +18,27 @@ public class DataPartnerSearchServiceImpl implements DataPartnerSearchService {
     }
 
     @Override
-    public List<DataPartnerDataVO> getDataPartnerForRequest(String dataPartner, String requestId) {
-        return dataPartnerDao.getDataPartnerForRequestId(dataPartner, requestId);
+    public List<String> getAllDataPartnersName() {
+        return dataPartnerDao.getAllDataPartnersName();
     }
 
     @Override
-    public DataPartnerDataVO getDataPartnerForRequestForDate(String dataPartner, String requestId, String date) {
-        return dataPartnerDao.getDataPartnerForRequestIdForDate(dataPartner, requestId, date);
+    public List<String> getDateListForDataPartner(String dataPartner) {
+        return dataPartnerDao.getDateListForDataPartner(dataPartner);
     }
 
     @Override
-    public List<DataPartnerDataVO> getAllDataPartnerRequest(String dataPartner) {
-        return dataPartnerDao.getAllDataPartnerRequestIds(dataPartner);
+    public DataPartnerDataVO getAllDataPartnerDataForDataPartner(String date) {
+        return dataPartnerDao.getAllDataPartnerDataForDataPartner(date);
     }
 
     @Override
-    public List<DataPartnerDataVO> getAllDataPartnerRequestForDate(String dataPartner, String date) {
-        return dataPartnerDao.getAllDataPartnerRequestIdsForDate(dataPartner, date);
+    public List<DataPartnerDataVO> getAllDataPartnerRequestForDate(String date, String dataPartner) {
+        return dataPartnerDao.getAllDataPartnerRequestIdsForDate(date, dataPartner);
+    }
+
+    @Override
+    public DataPartnerDataVO getDataPartnerForRequestForDate(String date, String dataPartner, String requestId) {
+        return dataPartnerDao.getDataPartnerForRequestIdForDate(date, dataPartner, requestId);
     }
 }

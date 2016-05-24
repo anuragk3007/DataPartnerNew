@@ -4,107 +4,147 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Data Partner</title>
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">-->
     <link rel="stylesheet" href="dataPartnerUI/resources/css/bootstrap.min.css">
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">-->
     <link rel="stylesheet" href="dataPartnerUI/resources/css/bootstrap-theme.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
     <script src="dataPartnerUI/resources/js/bootstrap.min.js"></script>
 
 
     <link href="dataPartnerUI/resources/css/custom.css" rel="stylesheet" type="text/css">
     <script src="dataPartnerUI/resources/js/dataPartnerIndex.js"></script>
     <script src="dataPartnerUI/resources/js/dataPartnerAjaxCall.js"></script>
-    <script src="dataPartnerUI/resources/js/dataPartnerDownload.js"></script>
+    <!--<script src="dataPartnerUI/resources/js/dataPartnerDownload.js"></script>-->
 </head>
 
-<body>
-<div class="custom-container" style="overflow: true">
-    <div class="col-xs-2"></div>
-    <div class="col-lg-8">
-        <div class="panel panel-primary">
-            <div style="background-color: #3490c1">
-                <img src="dataPartnerUI/images/exponential_logo.png" style="height: 100%">
-                <div class="col-xs-9" align="left" style="float: right">
-                    <h3 align="center" style="color: #c8e9f4"><strong>Data Partner Request Check Platform</strong></h3>
+<body style="height: auto" id="body" name="body">
+    <div class="custom-container">
+        <div class="col-xs-2"></div>
+        <div class="col-lg-8">
+            <div class="panel panel-primary">
+                <div style="background-color: #3490c1">
+                    <img src="dataPartnerUI/images/exponential_logo.png" style="height: 100%">
+                    <div class="col-xs-9" align="left" style="float: right">
+                        <h3 align="center" style="color: #c8e9f4"><strong>Data Partner Request Check Platform</strong></h3>
+                    </div>
                 </div>
-            </div>
 
-            <div class="panel-body" align="center">
-                <form id="formSubmission" name="formSubmission" method="post">
-                    <div class="col-xs-12">
-                        <div class="col-xs-3"></div>
-                        <div class="col-xs-2"><Strong>Data Partner </Strong></div>
-                        <div class="btn-group col-xs-7" style="margin-left:-15px">
-                            <input class="span2" id="dataPartner" name="dataPartner" type="hidden">
-                            <button type="button" id="dataPartnerListButton" name="dataPartnerListButton"
-                                    class="btn btn-info" style="width: 135px">Select Here
+                <div class="panel-body" align="center">
+                    <form id="formSubmission" name="formSubmission" method="post">
+                        <div class="col-xs-12">
+                            <div class="col-xs-3"></div>
+                            <div class="col-xs-2" align="right"><Strong>Data Partner </Strong></div>
+                            <div class="btn-group col-xs-7" style="margin-left:-15px">
+                                <input class="span2" id="dataPartner" name="dataPartner" value="default" type="hidden">
+                                <button type="button" id="dataPartnerListButton" name="dataPartnerListButton"
+                                        class="btn btn-info" style="width: 135px">Select Here
+                                </button>
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                                        id="dataPartnerList" name="dataPartnerList"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" id="dataPartnerSelectorDropdown"
+                                    name="dataPartnerSelectorDropdown" style="margin-left: 15px">
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" style="height:10px">
+                        </div>
+                        <!--calender starts-->
+                        <div class="col-xs-12">
+                            <div class="col-xs-3"></div>
+                            <div class="col-xs-2" align="right"><Strong>Start Date </Strong></div>
+                            <div class="btn-group col-xs-7" style="margin-left:-15px">
+                                <input class="span2" id="startDate" name="startDate" type="hidden">
+                                <button type="button" id="startDateButton" name="dateFromButton"
+                                        class="btn btn-info" style="width: 135px"> Start Date
+                                </button>
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                                        id="startDateList" name="startDateList"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" id="startDateDropdown"
+                                    name="startDateDropdown" style="margin-left: 15px">
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" style="height: 10px"></div>
+                        <div class="col-xs-12">
+                            <div class="col-xs-3"></div>
+                            <div class="col-xs-2" align="right"><Strong>End Date </Strong></div>
+                            <div class="btn-group col-xs-7" style="margin-left:-15px">
+                                <input class="span2" id="endDate" name="endDate" type="hidden">
+                                <button type="button" id="endDateButton" name="endDateButton"
+                                        class="btn btn-info" style="width: 135px"> End Date
+                                </button>
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
+                                        id="endDateList" name="endDateList"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" id="endDateDropdown"
+                                    name="endDateDropdown" style="margin-left: 15px">
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" style="height:10px"></div>
+                        <!--calender ends-->
+                        <div class="col-xs-12">
+                            <div class="col-xs-3"></div>
+                            <div class="col-xs-2" align="right"><Strong>Request Ids </Strong></div>
+
+                            <div class="input-group col-xs-7" align="left">
+                                <textarea class="custom-textarea" rows="3" id="requestIdList" name="requestIdList"
+                                          placeholder="Request Ids (Separated by NewLine/Tab/Space)&#13;&#10;Enter 'all' to list all request ids"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" style="height:10px"></div>
+                        <div class="col-xs-7" align="left" style="float:right">
+                            <input type="submit" class="btn btn-info" id="requestSubmit" name="requestSubmit"
+                                   value="Check Request" style="margin-left:-15px">
+                        </div>
+                    </form>
+                    <div class="col-xs-12" style="height: 15px"></div>
+                    <!--div will be visible after result is arrived so resultDiv-->
+                    <div class="col-xs-12" id="resultDiv" name="resultDiv" style="visibility: hidden">
+                        <div class="col-xs-7" align="right" style="font-size: 25px; font-family: casteller" id="summaryDiv"
+                             name="summaryDiv">
+                            <p style="color: #4e99c4;"><Strong>Summary</Strong></p>
+                        </div>
+                        <div class="col-xs-5" style="height: 8px; float: right" id="marginDiv" name="marginDiv"></div>
+                        <div class="col-xs-5" align="right" style="float: right" id="downloadDiv" name="downloadDiv">
+                            <button class="btn btn-info btn-xs" id="downloadButton" name="downloadButton">
+                                <a id="downloadLink" name="downloadLink" download="RequestFinderResult.csv"
+                                   style="color: inherit">Download</a>
                             </button>
-                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown"
-                                    id="dataPartnerList" name="dataPartnerList"
-                                    aria-haspopup="true" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" id="dataPartnerSelectorDropdown"
-                                name="dataPartnerSelectorDropdown" style="margin-left: 15px">
-                            </ul>
                         </div>
+                        <table class="table table-bordered" align="center" id="ResultTable" name="ResultTable">
+                            <thead style="font-size: 12px">
+                            <tr>
+                                <th style="white-space: nowrap">Date</th>
+                                <th style="white-space: nowrap">Data Partner</th>
+                                <th style="white-space: nowrap">Request Id</th>
+                                <th style="white-space: nowrap">Remarks</th>
+                                <th style="white-space: nowrap"># Beh</th>
+                                <th style="white-space: nowrap">Topic</th>
+                                <th style="white-space: nowrap"># US</th>
+                                <th style="white-space: nowrap"># UK</th>
+                            </tr>
+                            </thead>
+                            <tbody id="resultTableBody" name="resultTableBody" style="font-size: 12px">
+                            <!-- table body content is dynamically generated in dataPartnerAjaxCall.js -->
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="col-xs-12" style="height:10px">
-                    </div>
-                    <div class="col-xs-12">
-                        <div class="col-xs-3"></div>
-                        <div class="col-xs-2"><Strong>Request Ids </Strong></div>
-
-                        <div class="input-group col-xs-7" align="left">
-                            <textarea class="form-control" rows="3" id="requestIdList" name="requestIdList"
-                                      placeholder="Request Ids" required style="height:100px"></textarea>
-
-                        </div>
-                    </div>
-                    <div class="col-xs-12" style="height:10px">
-                    </div>
-                    <div class="col-xs-7" align="left" style="float:right">
-                        <input type="submit" class="btn btn-info" id="requestSubmit" name="requestSubmit"
-                               value="Check Request" style="margin-left:-15px">
-                    </div>
-                </form>
-                <div class="col-xs-12" style="height: 10px"></div>
-                <!--div will be visible after result is arrived so resultDiv-->
-                <div class="col-xs-12" id="resultDiv" name="resultDiv" style="visibility: hidden">
-                    <!--margin div-->
-                    <!--<div class="col-xs-12" style="height:10px"></div>
-
-                    &lt;!&ndash;div to provide summary & download button&ndash;&gt;
-                    <div class="col-xs-12" align="center"><Strong>Summary</Strong>
-                        &lt;!&ndash;download div&ndash;&gt;
-                        <div class="col=xs-4" align="center" style="float: right">
-                            <a href="data/requestFinderResult.csv" download="requestFinderResult.csv">Download</a>
-                        </div>
-                        &lt;!&ndash;download div ends here&ndash;&gt;
-                    </div>
-                    &lt;!&ndash;summary div ends&ndash;&gt;
-                    &lt;!&ndash;table to display result&ndash;&gt;
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Request Id</th>
-                            <th>Remarks</th>
-                            <th>Behavior List</th>
-                        </tr>
-                        </thead>
-                        <tbody id="resultantRowValue" name="resultantRowValue">
-                        </tbody>
-                    </table>-->
-                    <!--table ends here-->
+                    <!--resultDiv ends here-->
                 </div>
-                <!--resultDiv ends here-->
             </div>
         </div>
+        <div class="col-xs-2"></div>
     </div>
-    <div class="col-xs-2"></div>
-</div>
 </body>
 </html>
