@@ -67,7 +67,7 @@ public class RequestHandler extends HttpServlet {
             String dataPartner = parameterMap.get("dataPartner")[0];
             String sDateString = parameterMap.get("startDate")[0];
             String eDateString = parameterMap.get("endDate")[0];
-            String[] requestIdList = parameterMap.get("requestIdList")[0].split("\n|,|;|\t| ");
+            String[] requestIdList = parameterMap.get("requestIdList")[0].split("\n|\t");
             searchQueryResult.addAll(getQueryResult(sDateString, eDateString, dataPartner, requestIdList));
             Gson gson = new Gson();
             JSONArray jsonResultList = new JSONArray();

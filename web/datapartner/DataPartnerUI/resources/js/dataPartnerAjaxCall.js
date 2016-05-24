@@ -47,10 +47,14 @@ $(document).ready(function () {
                                     var tr = document.createElement("tr");
                                     tr.appendChild(getTableColumnForData(date));
                                     tr.appendChild(getTableColumnForData(dataPartnerName));
-                                    tr.appendChild(getTableColumnForData(requestId));
+                                    var td = getTableColumnForData(requestId);
+                                    td.style.width =  "24px";
+                                    td.style.whiteSpace = "normal";
+                                    td.align = "justify";
+                                    tr.appendChild(td);
                                     tr.appendChild(getTableColumnForData(remarks));
                                     tr.appendChild(getTableColumnForData(noOfBeh));
-                                    var td = getTableColumnForData(topicPath);
+                                    td = getTableColumnForData(topicPath);
                                     td.style.whiteSpace = "normal";
                                     td.align = "justify";
                                     tr.appendChild(td);
@@ -89,7 +93,7 @@ function preProcessResultDiv() {
 }
 function getTableColumnForData(text) {
     var td = document.createElement("td");
-    td.style.whiteSpace="nowrap";
+    td.style.whiteSpace = "nowrap";
     td.align = "center";
     text = document.createTextNode(text);
     td.appendChild(text);

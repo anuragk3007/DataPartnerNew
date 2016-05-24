@@ -6,6 +6,7 @@ import monitor.RequestFinderMonitor;
 import org.apache.log4j.Logger;
 import service.DataPartnerUpdateServiceImpl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,19 +76,13 @@ public class DataPartnerRequestFinder {
     }
 
     public static void main(String[] args) {
-        new DataPartnerRequestFinder(new Date()).process();
+        Date logDate = null;
+        try {
+            logDate = DataPartnerConstants.DATA_PARTNER_REPORT_DATE_FORMAT.parse(args[0]);
+        } catch (ParseException e){
+            LOGGER.error(e);
+        }
+
+        new DataPartnerRequestFinder(logDate).process();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
