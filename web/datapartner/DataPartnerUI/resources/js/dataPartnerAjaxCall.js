@@ -77,7 +77,7 @@ $(document).ready(function () {
                         }
                     }
                     document.getElementById("resultDiv").style.visibility = "visible";
-                    $(body).style.height = "inherit"
+                    //$(body).style.height = "inherit"
                 }
             }
         });

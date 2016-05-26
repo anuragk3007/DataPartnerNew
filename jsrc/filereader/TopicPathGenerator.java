@@ -1,6 +1,6 @@
 package filereader;
 
-import config.DPProperties;
+import properties.DPProperties;
 import model.DataPartnerBehaviorVO;
 import model.UserCountVO;
 import org.apache.log4j.Logger;

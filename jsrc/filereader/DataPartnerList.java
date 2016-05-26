@@ -1,6 +1,6 @@
 package filereader;
 
-import config.DPProperties;
+import properties.DPProperties;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;

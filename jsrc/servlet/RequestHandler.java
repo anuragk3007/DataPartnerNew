@@ -3,7 +3,7 @@ package servlet;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import config.DPProperties;
+import properties.DPProperties;
 import model.DataPartnerDataVO;
 import model.ReportsDataVO;
 import org.apache.log4j.Logger;
@@ -91,11 +91,11 @@ public class RequestHandler extends HttpServlet {
 
     private void writeResult(StringBuilder resultCSVString) {
         String resultFilePath = DPProperties.absoluteResultFilePath();
+        File resultDirectory = new File(DPProperties.absoluteResultDirPath());
+        if (!resultDirectory.exists()) {
+            resultDirectory.mkdirs();
+        }
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(resultFilePath, reportsDataVO.isAppend()))){
-            File resultDirectory = new File(DPProperties.absoluteResultDirPath());
-            if (!resultDirectory.exists()) {
-                resultDirectory.mkdirs();
-            }
             if (!reportsDataVO.isAppend()) {
                 writer.write("Date,Data Partner,Request Id,Remarks,# Behavior,Behavior Id,Topic Path,US User Count,UK User Count\n");
                 reportsDataVO.setAppend(true);

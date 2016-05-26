@@ -1,5 +1,6 @@
 package model;
 
+import filereader.DataPartnerList;
 import org.apache.log4j.Logger;
 import service.DataPartnerSearchService;
 import service.DataPartnerSearchServiceImpl;
@@ -57,6 +58,7 @@ public class ReportsDataVO {
     public void generateData(DataPartnerSearchService searchService) {
         dataPartnerNameList.clear();
         dataPartnerNameList.addAll(searchService.getAllDataPartnersName());
+        dataPartnerNameList.retainAll(new DataPartnerList().getList());
         Collections.sort(dataPartnerNameList);
         Set<Date> dateList = new TreeSet<>();
         for (String dataPartner : dataPartnerNameList) {

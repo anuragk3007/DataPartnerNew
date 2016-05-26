@@ -79,10 +79,14 @@ public class DataPartnerRequestFinder {
         Date logDate = null;
         try {
             logDate = DataPartnerConstants.DATA_PARTNER_REPORT_DATE_FORMAT.parse(args[0]);
-        } catch (ParseException e){
+        } catch (ParseException e) {
             LOGGER.error(e);
         }
-
-        new DataPartnerRequestFinder(logDate).process();
+        for (int i = 1; i < 4; i++) {
+            if (logDate != null) {
+                new DataPartnerRequestFinder(new Date(logDate.getTime() - i * DataPartnerConstants.MILLI_SECONDS_COUNT)).process();
+            }
+        }
+//        new DataPartnerRequestFinder(logDate).process();
     }
 }

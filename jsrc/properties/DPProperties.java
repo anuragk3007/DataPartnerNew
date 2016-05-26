@@ -1,4 +1,4 @@
-package config;
+package properties;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ public class DPProperties extends Properties {
 
     private DPProperties() {
         try {
-            load(DPProperties.class.getClassLoader().getResourceAsStream("/resources/dp.properties"));
+            load(DPProperties.class.getClassLoader().getResourceAsStream("dp.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }

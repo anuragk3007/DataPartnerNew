@@ -1,12 +1,11 @@
 package filereader;
 
 import com.csvreader.CsvReader;
-import config.DPProperties;
+import properties.DPProperties;
 import model.UserCountVO;
 import org.apache.log4j.Logger;
 import utils.DataPartnerConstants;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
